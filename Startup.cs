@@ -13,23 +13,20 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using TodoApi.Data;
 
-namespace TodoApi
-{
-    public class Startup
-    {
-        public Startup(IConfiguration configuration)
-        {
+namespace TodoApi {
+    public class Startup {
+        public Startup (IConfiguration configuration) {
             Configuration = configuration;
         }
 
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices (IServiceCollection services) {
+            
             //registering the added database context to use InMemoryDatabase
-            services.AddDbContext<TodoContext>(options => 
-                options.UseInMemoryDatabase("TodoList")
+            services.AddDbContext<TodoContext> (options =>
+                options.UseInMemoryDatabase ("TodoList")
                 //TODO: swap the InMemoryDatabase with SqlLite
                 //options.UseSqlite (Configuration.GetConnectionString ("DefaultConnection")));
                 //TODO: update the appsettings.json with the following
@@ -37,25 +34,21 @@ namespace TodoApi
                   "ConnectionStrings": {"DefaultConnection": "DataSource=app.db" }
                  */
 
-                );
+            );
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseHsts();
+        public void Configure (IApplicationBuilder app, IHostingEnvironment env) {
+            if (env.IsDevelopment ()) {
+                app.UseDeveloperExceptionPage ();
+            } else {
+                app.UseHsts ();
             }
 
-            app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseHttpsRedirection ();
+            app.UseMvc ();
         }
     }
 }

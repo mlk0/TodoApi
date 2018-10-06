@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using TodoApi.Data;
 using TodoApi.Models;
 
@@ -12,9 +14,12 @@ namespace TodoApi.Controllers {
     [ApiController]
     public class TodoController : ControllerBase {
         private readonly TodoContext context;
+                public ILogger<TodoController> _logger { get; }
 
-        public TodoController (TodoContext context) {
+
+        public TodoController (TodoContext context, ILogger<TodoController> logger) {
             this.context = context;
+            this._logger = logger;
 
             //TODO: remove the statement that adds an item id there are no items in the TodoItems table
             if (context.TodoItems.Count () == 0) {
@@ -69,6 +74,31 @@ namespace TodoApi.Controllers {
             }
             return todoItem;
         }
+
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateTodoItem([FromBody] TodoItem todoItem){
+            this.context.TodoItems.Add(todoItem);
+            var addItemResult = await this.context.SaveChangesAsync();
+            this._logger.LogDebug(JsonConvert.SerializeObject(addItemResult));
+            
+            
+            IActionResult result; //createdAtRouteActionResult = CreatedAtRoute("Todo_GetTodoItemIdAsync", new { id = todoItem.Id }, todoItem);
+            
+            if(addItemResult > 0){
+                // result = CreatedAtRoute("Todo_GetTodoItemIdAsync", new { id = todoItem.Id }, todoItem);
+                result = CreatedAtRoute("Todo_GetTodoItemIdAsync_async", new { id = todoItem.Id }, todoItem);
+
+            }
+            else{
+                result = BadRequest();
+            }
+
+            return result;
+
+        }
+    
 
     }
 }

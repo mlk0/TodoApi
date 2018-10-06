@@ -37,7 +37,23 @@ namespace TodoApi {
 
             );
 
-            services.AddSwaggerGen (c => c.SwaggerDoc ("v1", new Info { Title = "TodoApi", Version = "v1" }));
+            services.AddSwaggerGen (c => 
+                c.SwaggerDoc ("v1", new Info { 
+                    Title = "TodoApi", 
+                    Version = "v1"
+
+                    ,Description = "Sample API build with .net core 2.1"
+                    ,License = new License {
+                        Name = "Use under m1k0 Licencing Authority Grant",
+                        Url = "http://boite.najok.com"
+                    }
+                    ,TermsOfService = "google.com"
+                    ,Contact = new Contact {
+                        Name = "Baba Roga",
+                        Email = "baba.roga@live.com",
+                        Url = "https://twitter.com/baba-roga"
+                    }
+                     }));
 
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
         }

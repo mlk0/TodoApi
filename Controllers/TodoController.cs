@@ -10,6 +10,9 @@ using TodoApi.Models;
 
 namespace TodoApi.Controllers {
 
+    /// <summary>
+    /// CRUD operations for the TodoItem
+    /// </summary>
     [Route ("api/[controller]")]
     [ApiController]
     public class TodoController : ControllerBase {
@@ -32,6 +35,10 @@ namespace TodoApi.Controllers {
             }
         }
 
+        /// <summary>
+        /// Get all Todo items
+        /// </summary>
+        /// <returns></returns>
         [HttpGet ("all", Name = "todo_get_all")]
         public ActionResult<List<TodoItem>> GetAll () {
             var allTodoItems = this.context.TodoItems.ToList ();
@@ -39,6 +46,11 @@ namespace TodoApi.Controllers {
         }
 
         //sample of Http attribute routing - https://docs.microsoft.com/en-ca/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.1#attribute-routing-with-httpverb-attributes
+        /// <summary>
+        /// Get the details for a TodoItem specified by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet ("{id}/details", Name = "[controller]_[action]")]
         public ActionResult<TodoItem> GetTodoById (long id) {
             var todoById = this.context.TodoItems.FirstOrDefault (c => c.Id == id);
@@ -48,12 +60,21 @@ namespace TodoApi.Controllers {
             return todoById;
         }
 
+        /// <summary>
+        /// Get all Todo items in async mode and soret them in descending order based on their id values
+        /// </summary>
+        /// <returns></returns>
         [HttpGet (Name = "[controller]_[action]_async")]
         public async Task<ActionResult<List<TodoItem>>> GetAllAsync () {
             var allTodoItems = await this.context.TodoItems.OrderByDescending (i => i.Id).ToListAsync ();
             return allTodoItems;
         }
 
+        /// <summary>
+        /// Get TodoItem by id async
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet ("{id}", Name = "[controller]_[action]_async")]
         public async Task<ActionResult<TodoItem>> GetTodoItemIdAsync (long id) {
 
@@ -64,8 +85,24 @@ namespace TodoApi.Controllers {
             return todoItem;
         }
 
+        /// <summary>
+        /// Creates new TodoItem
+        /// </summary>
+        /// <remarks>
+        /// Sample payload:
+        /// {
+        /// "name": "milk the cow",
+        /// "isComplete": false    
+        /// }
+        /// </remarks>
+        /// <param name="todoItem"></param>
+        /// <returns>Newly created Todo item</returns>
+        /// <response code="201">Returns the newly created item</response>
+        /// <response code="400">If the item = is null</response> 
         [HttpPost ("", Name = "[controller]_[action]")]
         [HttpPost ("add", Name = "[controller]_[action]_add")]
+        [ProducesResponseType (201)]
+        [ProducesResponseType (400)]
         public async Task<IActionResult> CreateTodoItem ([FromBody] TodoItem todoItem) {
             this.context.TodoItems.Add (todoItem);
             var addItemResult = await this.context.SaveChangesAsync ();
@@ -85,6 +122,12 @@ namespace TodoApi.Controllers {
 
         }
 
+        /// <summary>
+        /// Updates the TodoItem for the specified id with the data in the paylaod
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="todoItem"></param>
+        /// <returns></returns>
         [HttpPut ("{id}")]
         public async Task<IActionResult> UpdateTodoItemAsync (long id, [FromBody] TodoItem todoItem) {
             var item = await this.context.TodoItems.FirstOrDefaultAsync (i => i.Id == id);
@@ -104,6 +147,11 @@ namespace TodoApi.Controllers {
 
         }
 
+        /// <summary>
+        /// Delete TodoItem by the specified id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpDelete ("{id}")]
         public async Task<IActionResult> DeleteTodoItemAsync (long id) {
 

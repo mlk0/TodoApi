@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,23 +39,30 @@ namespace TodoApi {
 
             );
 
-            services.AddSwaggerGen (c => 
-                c.SwaggerDoc ("v1", new Info { 
-                    Title = "TodoApi", 
-                    Version = "v1"
+            services.AddSwaggerGen (c => {
 
-                    ,Description = "Sample API build with .net core 2.1"
-                    ,License = new License {
-                        Name = "Use under m1k0 Licencing Authority Grant",
-                        Url = "http://boite.najok.com"
-                    }
-                    ,TermsOfService = "google.com"
-                    ,Contact = new Contact {
-                        Name = "Baba Roga",
-                        Email = "baba.roga@live.com",
-                        Url = "https://twitter.com/baba-roga"
-                    }
-                     }));
+                    c.SwaggerDoc ("v1", new Info {
+                        Title = "TodoApi",
+                            Version = "v1"
+
+                            , Description = "Sample API build with .net core 2.1", License = new License {
+                                Name = "Use under m1k0 Licencing Authority Grant",
+                                    Url = "http://boite.najok.com"
+                            }, TermsOfService = "google.com", Contact = new Contact {
+                                Name = "Baba Roga",
+                                    Email = "baba.roga@live.com",
+                                    Url = "https://twitter.com/baba-roga"
+                            }
+                    });
+
+                    // Set the comments path for the Swagger JSON and UI.
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine (AppContext.BaseDirectory, xmlFile);
+                    c.IncludeXmlComments (xmlPath);
+
+                }
+
+            );
 
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
         }
@@ -67,10 +76,10 @@ namespace TodoApi {
             }
 
             app.UseSwagger ();
-            app.UseSwaggerUI (c => { 
-                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "TodoApi Swagger Ui v1"); 
+            app.UseSwaggerUI (c => {
+                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "TodoApi Swagger Ui v1");
                 c.RoutePrefix = String.Empty;
-                });
+            });
 
             app.UseHttpsRedirection ();
             app.UseMvc ();

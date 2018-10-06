@@ -42,6 +42,9 @@ namespace TodoApi.Controllers {
         [HttpGet ("{id}/details", Name = "[controller]_[action]")]    
         public ActionResult<TodoItem> GetTodoById (long id) {
             var todoById = this.context.TodoItems.FirstOrDefault (c => c.Id == id);
+            if(todoById == null){
+                return new NotFoundResult();
+            }
             return todoById;
         }
 
@@ -61,6 +64,9 @@ namespace TodoApi.Controllers {
         public async Task<ActionResult<TodoItem>> GetTodoItemIdAsync(long id){
 
             var todoItem = await this.context.TodoItems.FirstOrDefaultAsync(i=>i.Id == id);
+            if(todoItem == null){
+                return new NotFoundResult();
+            }
             return todoItem;
         }
 

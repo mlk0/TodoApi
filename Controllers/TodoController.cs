@@ -1,5 +1,8 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TodoApi.Data;
 using TodoApi.Models;
 
@@ -18,9 +21,15 @@ namespace TodoApi.Controllers {
                 context.TodoItems.Add (new TodoItem { Name = "Init Item" });
                 context.SaveChanges();
             }
-
-
         }
+
+
+        [HttpGet]
+        public ActionResult<List<TodoItem>> GetAll(){
+            var allTodoItems = this.context.TodoItems.ToList();
+            return allTodoItems;
+        }
+
 
     }
 }

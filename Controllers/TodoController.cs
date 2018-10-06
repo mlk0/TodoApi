@@ -63,7 +63,9 @@ namespace TodoApi.Controllers {
         /// <summary>
         /// Get all Todo items in async mode and soret them in descending order based on their id values
         /// </summary>
-        /// <returns></returns>
+        /// <returns>All TodoItem instances ordered by the id in descending order</returns>
+        /// <response code="200">Successful retrieval of all TodoItem instances</response>
+        [ProducesResponseType (200)]
         [HttpGet (Name = "[controller]_[action]_async")]
         public async Task<ActionResult<List<TodoItem>>> GetAllAsync () {
             var allTodoItems = await this.context.TodoItems.OrderByDescending (i => i.Id).ToListAsync ();
@@ -74,7 +76,11 @@ namespace TodoApi.Controllers {
         /// Get TodoItem by id async
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>TodoItem identified by the passed id</returns>
+        /// <returns code="200">if TodoItem can be retrieved for the specified id</returns>
+        /// <returns code="404">if the passed id does not correspond to any TodoItem</returns>
+        [ProducesResponseType (200)]
+        [ProducesResponseType (404)]
         [HttpGet ("{id}", Name = "[controller]_[action]_async")]
         public async Task<ActionResult<TodoItem>> GetTodoItemIdAsync (long id) {
 
@@ -127,7 +133,15 @@ namespace TodoApi.Controllers {
         /// </summary>
         /// <param name="id"></param>
         /// <param name="todoItem"></param>
-        /// <returns></returns>
+        /// <returns>No Content upon successfully updated TodoItem</returns>
+        /// <returns code="204">No Content for successfully updated TodoItem</returns>
+        /// <returns code="404">When the passed id does not correspond to any TodoItem from the database</returns>
+        /// <returns code="400">When the update fails</returns>
+        
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+
         [HttpPut ("{id}")]
         public async Task<IActionResult> UpdateTodoItemAsync (long id, [FromBody] TodoItem todoItem) {
             var item = await this.context.TodoItems.FirstOrDefaultAsync (i => i.Id == id);
@@ -151,7 +165,11 @@ namespace TodoApi.Controllers {
         /// Delete TodoItem by the specified id
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns>No Content upon successfull deleted TodoItem for the specified id</returns>
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+
         [HttpDelete ("{id}")]
         public async Task<IActionResult> DeleteTodoItemAsync (long id) {
 

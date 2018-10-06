@@ -11,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
 using TodoApi.Data;
 
 namespace TodoApi {
@@ -23,7 +24,7 @@ namespace TodoApi {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
-            
+
             //registering the added database context to use InMemoryDatabase
             services.AddDbContext<TodoContext> (options =>
                 options.UseInMemoryDatabase ("TodoList")
@@ -36,6 +37,8 @@ namespace TodoApi {
 
             );
 
+            services.AddSwaggerGen (c => c.SwaggerDoc ("v1", new Info { Title = "TodoApi", Version = "v1" }));
+
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
         }
 
@@ -46,6 +49,9 @@ namespace TodoApi {
             } else {
                 app.UseHsts ();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c=>c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi Swagger Ui v1"));
 
             app.UseHttpsRedirection ();
             app.UseMvc ();

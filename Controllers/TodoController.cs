@@ -77,7 +77,7 @@ namespace TodoApi.Controllers {
 
 
 
-        [HttpPost]
+        [HttpPost("add", Name="[controller]_[action]")]
         public async Task<IActionResult> CreateTodoItem([FromBody] TodoItem todoItem){
             this.context.TodoItems.Add(todoItem);
             var addItemResult = await this.context.SaveChangesAsync();

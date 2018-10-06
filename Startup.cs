@@ -50,8 +50,11 @@ namespace TodoApi {
                 app.UseHsts ();
             }
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c=>c.SwaggerEndpoint("/swagger/v1/swagger.json", "TodoApi Swagger Ui v1"));
+            app.UseSwagger ();
+            app.UseSwaggerUI (c => { 
+                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "TodoApi Swagger Ui v1"); 
+                c.RoutePrefix = String.Empty;
+                });
 
             app.UseHttpsRedirection ();
             app.UseMvc ();

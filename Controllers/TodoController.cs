@@ -31,7 +31,7 @@ namespace TodoApi.Controllers {
         }
 
 
-        [HttpGet]
+        [HttpGet("all", Name="todo_get_all")]
         public ActionResult<List<TodoItem>> GetAll () {
             var allTodoItems = this.context.TodoItems.ToList ();
             return allTodoItems;
@@ -39,14 +39,30 @@ namespace TodoApi.Controllers {
 
 
         //sample of Http attribute routing - https://docs.microsoft.com/en-ca/aspnet/core/mvc/controllers/routing?view=aspnetcore-2.1#attribute-routing-with-httpverb-attributes
-        [HttpGet ("{id}", Name = "[controller]_[action]")]    
+        [HttpGet ("{id}/details", Name = "[controller]_[action]")]    
         public ActionResult<TodoItem> GetTodoById (long id) {
             var todoById = this.context.TodoItems.FirstOrDefault (c => c.Id == id);
             return todoById;
         }
 
 
+
+
+
+        [HttpGet(Name="[controller]_[action]_async")]
+        public async Task<ActionResult<List<TodoItem>>> GetAllAsync() 
+        {
+            var allTodoItems = await this.context.TodoItems.OrderByDescending(i=>i.Id).ToListAsync();
+            return allTodoItems;
+        }
         
+
+        [HttpGet("{id}", Name="[controller]_[action]_async")]
+        public async Task<ActionResult<TodoItem>> GetTodoItemIdAsync(long id){
+
+            var todoItem = await this.context.TodoItems.FirstOrDefaultAsync(i=>i.Id == id);
+            return todoItem;
+        }
 
     }
 }

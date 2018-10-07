@@ -16,6 +16,11 @@ using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Swagger;
 using TodoApi.Data;
 
+//the following 3 are required for NSwag
+using NJsonSchema;
+using NSwag.AspNetCore;
+// using System.Reflection;
+
 namespace TodoApi {
     public class Startup {
         public Startup (IConfiguration configuration) {
@@ -39,30 +44,33 @@ namespace TodoApi {
 
             );
 
-            services.AddSwaggerGen (c => {
+            //Swashbuckle
+            // services.AddSwaggerGen (c => {
 
-                    c.SwaggerDoc ("v1", new Info {
-                        Title = "TodoApi",
-                            Version = "v1"
+            //         c.SwaggerDoc ("v1", new Info {
+            //             Title = "TodoApi",
+            //                 Version = "v1"
 
-                            , Description = "Sample API build with .net core 2.1", License = new License {
-                                Name = "Use under m1k0 Licencing Authority Grant",
-                                    Url = "http://boite.najok.com"
-                            }, TermsOfService = "google.com", Contact = new Contact {
-                                Name = "Baba Roga",
-                                    Email = "baba.roga@live.com",
-                                    Url = "https://twitter.com/baba-roga"
-                            }
-                    });
+            //                 , Description = "Sample API build with .net core 2.1", License = new License {
+            //                     Name = "Use under m1k0 Licencing Authority Grant",
+            //                         Url = "http://boite.najok.com"
+            //                 }, TermsOfService = "google.com", Contact = new Contact {
+            //                     Name = "Baba Roga",
+            //                         Email = "baba.roga@live.com",
+            //                         Url = "https://twitter.com/baba-roga"
+            //                 }
+            //         });
 
-                    // Set the comments path for the Swagger JSON and UI.
-                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                    var xmlPath = Path.Combine (AppContext.BaseDirectory, xmlFile);
-                    c.IncludeXmlComments (xmlPath);
+            //         // Set the comments path for the Swagger JSON and UI.
+            //         var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            //         var xmlPath = Path.Combine (AppContext.BaseDirectory, xmlFile);
+            //         c.IncludeXmlComments (xmlPath);
 
-                }
+            //     }
 
-            );
+            // );
+
+            services.AddSwagger(); //NSwag
 
             services.AddMvc ().SetCompatibilityVersion (CompatibilityVersion.Version_2_1);
         }
@@ -75,11 +83,24 @@ namespace TodoApi {
                 app.UseHsts ();
             }
 
-            app.UseSwagger ();
-            app.UseSwaggerUI (c => {
-                c.SwaggerEndpoint ("/swagger/v1/swagger.json", "TodoApi Swagger Ui v1");
-                c.RoutePrefix = String.Empty;
+            //Swashbuckle
+            // app.UseSwagger ();
+            // app.UseSwaggerUI (c => {
+            //     c.SwaggerEndpoint ("/swagger/v1/swagger.json", "TodoApi Swagger Ui v1");
+            //     c.RoutePrefix = String.Empty;
+            // });
+
+
+            //NSwag
+            // Register the Swagger generator and the Swagger UI middlewares
+            app.UseSwaggerUi3WithApiExplorer(settings =>
+            {
+                settings.GeneratorSettings.DefaultPropertyNameHandling = 
+                    PropertyNameHandling.CamelCase;
+                
             });
+
+
 
             app.UseHttpsRedirection ();
             app.UseMvc ();

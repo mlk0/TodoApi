@@ -1,0 +1,58 @@
+# I want to create a sp for accessing the u-vault (from the devx group)
+# with privileges to list, get, set and delete secrets
+
+az login
+
+az ad sp list --query "[?[displayName]].displayName"
+
+az keyvault list --output table
+
+az group list --output table
+
+# to get the devx full id
+az group show --name devx
+
+# create the sp for rbac
+az ad sp create-for-rbac --name uVaultSP --password '!mal0Morgen' --scopes "/subscriptions/0bbbf429-7c8c-4b1c-a446-06219724cc64/resourceGroups/devx"
+# {
+#   "appId": "217da58d-ca29-4d68-b84f-808c441c94e3",
+#   "displayName": "uVaultSP",
+#   "name": "http://uVaultSP",
+#   "password": "!mal0Morgen",
+#   "tenant": "fc48caac-d828-4c3b-a47b-4740adceee99"
+# }
+
+# set the access policy 
+az keyvault set-policy --name 'u-vault' --spn 217da58d-ca29-4d68-b84f-808c441c94e3 --secret-permissions get list set delete
+
+az logout
+
+az login --service-principal --username "217da58d-ca29-4d68-b84f-808c441c94e3" --password '!mal0Morgen' --tenant "fc48caac-d828-4c3b-a47b-4740adceee99"
+
+az keyvault list --output table
+az keyvault show --name u-vault
+
+az keyvault secret list --vault-name u-vault
+az keyvault secret list --vault-name u-vault --query "[*].id"
+
+az keyvault secret show --vault-name u-vault --name tajna --query id --output table
+
+az keyvault secret show --vault-name u-vault --name tajna --query value --output tsv
+az keyvault secret show --vault-name u-vault --name skrisno --query value --output tsv
+
+az keyvault secret show --vault-name u-vault --name tajna --query "[value]"
+
+az keyvault secret set --vault-name u-vault --name skrisno --value nesto
+az keyvault secret set --vault-name u-vault --name golema --value zaebancija
+az keyvault secret set --vault-name u-vault --name lozinka --value boza
+
+az keyvault secret delete --vault-name u-vault --name lozinka
+az keyvault secret set --vault-name u-vault --name lozinka --value boza
+az keyvault secret set --vault-name u-vault --name lozinka --value boza --query "[?n]|[0]"
+
+
+az keyvault secret show --vault-name u-vault --id "https://u-vault.vault.azure.net/secrets/golema" --query 'value'
+
+
+az keyvault secret delete --vault-name u-vault
+

@@ -1,0 +1,72 @@
+az login
+
+# this returns a json
+az keyvault list 
+
+# the following query will return only the names
+az keyvault list --query "[?name].name"
+
+# when using the --output with table, it outputs very convenient list
+az keyvault list --output table
+
+
+# displaying the details of a keyvault with the name u-vault. lot's of info
+az keyvault show --name u-vault 
+
+# that one can be also a table
+az keyvault show --name u-vault --output table
+
+# list all the secrets in the vault
+az keyvault secret list --vault-name u-vault
+az keyvault secret list --vault-name u-vault --output tsv
+az keyvault secret list --vault-name u-vault --output table
+az keyvault secret list --vault-name u-vault --output json
+az keyvault secret list --vault-name u-vault --output jsonc
+
+az keyvault secret list --vault-name u-vault --query '[*]'  # pass through the whole array
+az keyvault secret list --vault-name u-vault --query '[]'  # fattens the array
+az keyvault secret list --vault-name u-vault --query '[0]'  # get the fist secret
+az keyvault secret list --vault-name u-vault --query '[-1]'  # get the last secret
+az keyvault secret list --vault-name u-vault --query '[1:3]'  # get all the secrets in the range 1-(3-1)
+
+az keyvault secret list --vault-name u-vault --query 'id' # this is not returning anything since it's a list
+az keyvault secret list --vault-name u-vault --query '[*].id' # this is getting all the elements of the array and extracts only the id property
+az keyvault secret list --vault-name u-vault --query '[*].id' --output tsv # only the id field without quotes and
+
+az keyvault secret list --vault-name u-vault --query '[*].attributes' # this is getting all the elements of the array and extracts only the attributes which is a node
+
+az keyvault secret list --vault-name u-vault --query '[*].attributes' --output tsv # not very usefull since it creates a tab separated list from each of the properties objects
+
+
+az keyvault secret list --vault-name u-vault --query '[*].attributes.created' # this is getting all the elements of the array and extracts only the created property of the attributes which is a node
+
+az keyvault secret list --vault-name u-vault --query '[*].attributes.created' --output tsv
+
+
+
+
+az keyvault secret list --vault-name u-vault --output table --query '[*].{ID:id, DateCreated:attributes.created}'
+az keyvault secret show --id https://u-vault.vault.azure.net/secrets/golema --query 'value'
+
+
+
+
+
+
+
+
+
+
+
+
+# showing the details of the secret 'tajna' in the 'u-vault'
+az keyvault secret show --vault-name u-vault --name tajna
+
+# in case when the specific value of the secret needs to be retrieved
+az keyvault secret show --vault-name u-vault --name tajna --query 'value'
+
+# trying to assign the selected value to a variable
+pip=10 pip=$(az keyvault secret show --vault-name u-vault --name tajna --query value) echo $pip
+
+
+

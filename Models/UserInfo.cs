@@ -7,4 +7,7 @@ namespace TodoApi.Models {
         public string EmailConfirmed { get; set; }
         public string Email { get; set; }
     }
+
+
+
 }

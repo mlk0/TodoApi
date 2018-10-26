@@ -23,18 +23,20 @@ namespace TodoApi
 
                 var builtConfig = config.Build();
 
+                
+
                 config.AddAzureKeyVault(
 
-                    $"https://{builtConfig["Vault"]}.vault.azure.net/",
-                    builtConfig["ClientId"],
-                    builtConfig["ClientSecret"]
+                    $"https://{builtConfig["keyvault:name"]}.vault.azure.net/",
+                    builtConfig["keyvault:appId"],
+                    builtConfig["keyvault:password"]
 
                 );
 
             }
-            
+
             )
-            
+
                 .UseStartup<Startup>();
     }
 }

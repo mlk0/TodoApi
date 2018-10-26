@@ -22,7 +22,7 @@ az ad sp create-for-rbac --name uVaultSP --password '!mal0Morgen' --scopes "/sub
 #   "tenant": "fc48caac-d828-4c3b-a47b-4740adceee99"
 # }
 
-# set the access policy 
+# set the access policy
 az keyvault set-policy --name 'u-vault' --spn 217da58d-ca29-4d68-b84f-808c441c94e3 --secret-permissions get list set delete
 
 az logout
@@ -56,3 +56,30 @@ az keyvault secret show --vault-name u-vault --id "https://u-vault.vault.azure.n
 
 az keyvault secret delete --vault-name u-vault
 
+
+
+
+az login --service-principal --username "3300c5b5-6d50-4d57-a47b-c6de3063f024" --password 'a@Access!@#123' --tenant "fc48caac-d828-4c3b-a47b-4740adceee99"
+
+az group list
+
+
+
+
+az ad sp create-for-rbac --name dev_service_principal --password 'devAkses!@123' --scopes "/subscriptions/0bbbf429-7c8c-4b1c-a446-06219724cc64/resourceGroups/dev"
+
+az keyvault set-policy --name 'd-vault' --spn cd852b49-0562-46ca-b1e9-21f6d3d24b66 --secret-permissions get list set delete
+
+
+az login --service-principal --username "cd852b49-0562-46ca-b1e9-21f6d3d24b66" --password 'devAkses!@123' --tenant "fc48caac-d828-4c3b-a47b-4740adceee99"
+az keyvault secret list --vault-name d-vault
+
+az login
+az logout
+
+az login --service-principal --username "217da58d-ca29-4d68-b84f-808c441c94e3" --password '!mal0Morgen' --tenant "fc48caac-d828-4c3b-a47b-4740adceee99"
+
+az keyvault set-policy --name 'q-vault' --spn 3300c5b5-6d50-4d57-a47b-c6de3063f024 --secret-permissions list get set delete
+list get set delete
+delete get list recover set
+az keyvault set-policy --help

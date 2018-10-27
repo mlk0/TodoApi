@@ -14,11 +14,11 @@ $deploymentVariables = @{}
 Write-Host $appHost $environmentCode $maxItems $keyvaultName  $keyvaultAppId  $keyvaultPassword
 
 $deploymentVariables.Add("appHost",$appHost);
-$deploymentVariables.Add("environmentCode",$environmentCode);
-$deploymentVariables.Add("maxItems",$maxItems;
-$deploymentVariables.Add("keyvault:name",$keyvaultName;
-$deploymentVariables.Add("keyvault:appId",$keyvaultAppId);
-$deploymentVariables.Add("keyvault:password",$keyvaultPassword;
+$deploymentVariables.Add("environmentCode",$environmentCode)
+$deploymentVariables.Add("maxItems",$maxItems)
+$deploymentVariables.Add("keyvault:name",$keyvaultName)
+$deploymentVariables.Add("keyvault:appId",$keyvaultAppId)
+$deploymentVariables.Add("keyvault:password",$keyvaultPassword)
 
 
 

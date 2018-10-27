@@ -1,13 +1,23 @@
 
+param(
+    [string] $appHost,
+     [string] $environmentCode,
+     [string] $maxItems,
+     [string] $keyvaultName,
+     [string] $keyvaultAppId,
+     [string] $keyvaultPassword
+
+    )
 
 $deploymentVariables = @{}
 
-$deploymentVariables.Add("appHost","$(appHost)");
-$deploymentVariables.Add("environmentCode","$(environmentCode)");
-$deploymentVariables.Add("maxItems","$(maxItems)");
-$deploymentVariables.Add("keyvault:name","$(keyvaultName)");
-$deploymentVariables.Add("keyvault:appId","$(keyvaultAppId)");
-$deploymentVariables.Add("keyvault:password","$(keyvaultPassword)");
+$deploymentVariables.Add("appHost",$appHost);
+$deploymentVariables.Add("environmentCode",$environmentCode);
+$deploymentVariables.Add("maxItems",$maxItems;
+$deploymentVariables.Add("keyvault:name",$keyvaultName;
+$deploymentVariables.Add("keyvault:appId",$keyvaultAppId);
+$deploymentVariables.Add("keyvault:password",$keyvaultAppId;
+
 
 
 

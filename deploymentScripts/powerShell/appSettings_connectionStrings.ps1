@@ -12,7 +12,11 @@ $deploymentVariables.Add("azureSqlConnectionString_SQLAzure",$azureSqlConnection
 $deploymentVariables.Add("sqlStandardConnectionString_SQLServer",$sqlStandardConnectionString_SQLServer);
 $deploymentVariables.Add("azureSqlConnection",$azureSqlConnection);
 
-$deploymentVariables
+Write-Host "checkong the paremeters asignement"
+foreach ($item in $deploymentVariables.Keys) {
+    Write-Host "key : $($item) - Value : $($deploymentVariables[$item]) is of type : $($deploymentVariables[$item].GetType())"
+}
+
 
 
 
